@@ -6,8 +6,18 @@
 <body>
 <h2>Пользователи:</h2>
 <ul>
+
     <li th:each="user : ${users}" th:text="|${user.firstName} ${user.lastName}, email: ${user.email}|"></li>
+
 </ul>
+
+<h2>Добавить нового пользователя:</h2>
+<form action="#" th:action="@{/addUser}" method="post">
+    <input type="text" name="firstName" placeholder="Имя" required />
+    <input type="text" name="lastName" placeholder="Фамилия" required />
+    <input type="email" name="email" placeholder="Email" required />
+    <button type="submit">Добавить</button>
+</form>
 </body>
 </html>
    
