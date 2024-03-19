@@ -28,4 +28,26 @@ public class UserController {
         userService.add(newUser);
         return "redirect:/users";
     }
+
+    @PostMapping("/deleteUser")
+    public String deleteUser(@RequestParam("id") long id) {
+        userService.delete(id);
+        return "redirect:/users";
+    }
+
+    @GetMapping("/editUser")
+    public String editUserForm(@RequestParam("id") long id, Model model) {
+        User existingUser = userService.findById(id);
+        model.addAttribute("user", existingUser);
+        return "editUser";
+    }
+
+    @PostMapping("/updateUser")
+    public String updateUser(@RequestParam("id") long id,
+                             @RequestParam String firstName,
+                             @RequestParam String lastName,
+                             @RequestParam String email) {
+        userService.update(new User(id, firstName, lastName, email));
+        return "redirect:/users";
+    }
 }

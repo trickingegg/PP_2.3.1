@@ -5,10 +5,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Column;
-import javax.persistence.OneToOne;
-import javax.persistence.JoinColumn;
 import javax.persistence.GenerationType;
-import javax.persistence.CascadeType;
 import java.util.Objects;
 
 @Entity
@@ -96,5 +93,12 @@ public class User {
         sb.append("LastName : ").append(lastName).append('\n');
         sb.append("Email : ").append(email).append('\n');
         return sb.toString();
+    }
+
+    public User(long id, String firstName, String lastName, String email) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
     }
 }

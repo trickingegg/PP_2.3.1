@@ -24,4 +24,24 @@ public class UserDaoImp implements UserDao {
         TypedQuery<User> query = entityManager.createQuery("from User", User.class);
         return query.getResultList();
     }
+
+    @Override
+    public void delete(long id) {
+        User user = entityManager.find(User.class, id);
+        if (user != null) {
+            entityManager.remove(user);
+        }
+    }
+
+    @Override
+    public void update(User user) {
+        entityManager.merge(user);
+    }
+    @Override
+    public User findById(long id) {
+        return entityManager.find(User.class, id);
+    }
+
+
+
 }
