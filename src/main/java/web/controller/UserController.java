@@ -3,11 +3,15 @@ package web.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import web.model.User;
 import web.service.UserService;
+
+import javax.validation.Valid;
 
 @Controller
 public class UserController {
@@ -17,15 +21,24 @@ public class UserController {
     @GetMapping("/users")
     public String listUsers(Model model) {
         model.addAttribute("users", userService.listUsers());
+        model.addAttribute("user", new User());
         return "users";
     }
 
+    @GetMapping("/addUser")
+    public String addUserForm(Model model) {
+        model.addAttribute("user", new User());
+        return "addUser";
+    }
+
     @PostMapping("/addUser")
-    public String addUser(@RequestParam String firstName,
-                          @RequestParam String lastName,
-                          @RequestParam String email) {
-        User newUser = new User(firstName, lastName, email);
-        userService.add(newUser);
+    public String addUser(@ModelAttribute("user") @Valid User user,
+                          BindingResult result) {
+        if (result.hasErrors()) {
+            result.getAllErrors().forEach(error -> System.out.println(error.getDefaultMessage()));
+            return "addUser";
+        }
+        userService.add(user);
         return "redirect:/users";
     }
 
@@ -42,12 +55,15 @@ public class UserController {
         return "editUser";
     }
 
-    @PostMapping("/updateUser")
-    public String updateUser(@RequestParam("id") long id,
-                             @RequestParam String firstName,
-                             @RequestParam String lastName,
-                             @RequestParam String email) {
-        userService.update(new User(id, firstName, lastName, email));
+    @PostMapping("/editUser")
+    public String updateUser(@ModelAttribute("user") @Valid User user,
+                             BindingResult result,
+                             @RequestParam("id") long id) {
+        if (result.hasErrors()) {
+            user.setId(id);
+            return "editUser";
+        }
+        userService.update(user);
         return "redirect:/users";
     }
 }

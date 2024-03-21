@@ -4,8 +4,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.Column;
 import javax.persistence.GenerationType;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 import java.util.Objects;
 
 @Entity
@@ -16,18 +18,29 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name")
+    @NotBlank(message = "Name shouldn't be blank!")
+    @Pattern(regexp = "^[a-zA-Z]+$", message = "Name should have only letters!")
     private String firstName;
 
-    @Column(name = "last_name")
+    @NotBlank(message = "Surname shouldn't be blank!")
+    @Pattern(regexp = "^[a-zA-Z]+$", message = "Surname should have only letters!")
     private String lastName;
 
-    @Column(name = "email")
+    @NotBlank(message = "Email shouldn't be blank")
+    @Email(message = "Email should be valid")
+    @Pattern(regexp = "^[a-zA-Z\\d]+@[a-zA-Z\\d.-]+\\.[a-zA-Z]{2,}$", message = "Email shouldn't have symbols before the '@'")
     private String email;
 
     public User() {}
 
     public User(String firstName, String lastName, String email) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+    }
+
+    public User(long id, String firstName, String lastName, String email) {
+        this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -93,12 +106,5 @@ public class User {
         sb.append("LastName : ").append(lastName).append('\n');
         sb.append("Email : ").append(email).append('\n');
         return sb.toString();
-    }
-
-    public User(long id, String firstName, String lastName, String email) {
-        this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
     }
 }

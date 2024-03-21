@@ -13,10 +13,10 @@ public class DataInit {
     @Autowired
     private UserService userService;
 
-    @PostConstruct
-    public void init() {
-        userService.add(new User("Name1", "Second name1", "email1@mail.ru"));
-        userService.add(new User("Name2", "Second name2", "email2@mail.ru"));
-        userService.add(new User("Name3", "Second name3", "email3@mail.ru"));
-    }
+//    @PostConstruct
+//    public void init() {
+//        userService.add(new User("NameOne", "SecondNameOne", "email1@mail.ru"));
+//        userService.add(new User("NameTwo", "SecondNameTwo", "email2@mail.ru"));
+//        userService.add(new User("NameThree", "SecondNameThree", "email3@mail.ru"));
+//    }
 }
